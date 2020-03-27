@@ -87,6 +87,14 @@ $.fn.selectize = function(settings_user) {
 			option[field_value]    = option[field_value] || value;
 			option[field_disabled] = option[field_disabled] || $option.prop('disabled');
 			option[field_optgroup] = option[field_optgroup] || group;
+			$($option[0].attributes).each(
+				function(i,el){
+					if(el.name.match(/^data(-\w+)+$/)){
+						option[el.name] = el.value;
+					}
+				}
+			);
+
 
 			optionsMap[value] = option;
 			options.push(option);

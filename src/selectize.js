@@ -363,8 +363,8 @@ $.extend(Selectize.prototype, {
 
 		// necessary for mobile webkit devices (manual focus triggering
 		// is ignored unless invoked within a click event)
-    // also necessary to reopen a dropdown that has been closed by
-    // closeAfterSelect
+	// also necessary to reopen a dropdown that has been closed by
+	// closeAfterSelect
 		if (!self.isFocused || !self.isOpen) {
 			self.focus();
 			e.preventDefault();
@@ -1722,7 +1722,17 @@ $.extend(Selectize.prototype, {
 			options = [];
 			for (i = 0, n = self.items.length; i < n; i++) {
 				label = self.options[self.items[i]][self.settings.labelField] || '';
-				options.push('<option value="' + escape_html(self.items[i]) + '" selected="selected">' + escape_html(label) + '</option>');
+				var html_attr = ' ';
+				$(self.options[self.items[i]]).each(
+					function(i,el){
+						for(var key in el){
+							if(key.match(/^data(-\w+)+$/)){
+								html_attr += key+'="'+el[key]+'" ';
+							}
+						}
+					}
+				);
+				options.push('<option data-foo="bar" value="' + escape_html(self.items[i]) + '" '+html_attr+' selected="selected">' + escape_html(label) + '</option>');
 			}
 			if (!options.length && !this.$input.attr('multiple')) {
 				options.push('<option value="" selected="selected"></option>');
